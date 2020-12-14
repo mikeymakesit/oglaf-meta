@@ -22,7 +22,7 @@ parser.add_argument('-af', metavar='filename', action='store',
     help='Archive file - Provide a custom JSON archive filename instead of the default "' + json_archive + '"')
 parser.add_argument('-tf', metavar='filename', action='store',
     help='Tag file - Provide a custom JSON tag set instead of the default "' + json_tags + '"')
-parser.add_argument('-t', action='append', metavar='word',
+parser.add_argument('-t', '-tag', action='append', metavar='word',
     help='Tag - Keyword relevant to your activity, can be specified more than once')
 parser.add_argument('-title', action='append',
     help='Title - The title of a comic related to your activity, can be specified more than once')
@@ -119,8 +119,11 @@ else:
 
     elif args.l:
         tags = set()
-        for v in td.values():
+        for k, v in td.items():
             for t in v:
+                if args.title and not any(lt == k.lower() for lt in args.title):
+                    continue
                 tags.add(t)
+
         print("Tags:\n{}".format('\n'.join(sorted(tags))))
 
