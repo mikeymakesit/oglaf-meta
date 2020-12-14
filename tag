@@ -19,9 +19,9 @@ parser.add_argument('-d', action='store_true',
 parser.add_argument('-l', action='store_true',
     help='List - List all tags')
 parser.add_argument('-af', metavar='filename', action='store',
-    help='Archive file - Provide a custom JSON archive filename instead of the default "' + json_archive + '"')
+    help='Archive file - Provide a custom JSON archive file instead of the default "' + json_archive + '"')
 parser.add_argument('-tf', metavar='filename', action='store',
-    help='Tag file - Provide a custom JSON tag set instead of the default "' + json_tags + '"')
+    help='Tag file - Provide a custom JSON tag file instead of the default "' + json_tags + '"')
 parser.add_argument('-t', '-tag', action='append', metavar='word',
     help='Tag - Keyword relevant to your activity, can be specified more than once')
 parser.add_argument('-title', action='append',
@@ -48,7 +48,7 @@ def read_json(f):
 def write_json(f, d):
     ''' Write some JSON out to a file. '''
     with open(f, 'w') as outfile:
-        json.dump(d, outfile)
+        json.dump(d, outfile, indent=2)
 
 
 ad = read_json(json_archive)

@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+
+import argparse
+import json
+
+
+json_archive    = 'archive.json'
+json_tags       = 'tags.json'
+debug           = False
+
+
+parser = argparse.ArgumentParser(description='Build an Oglaf reading guide based on tags.')
+parser.add_argument('-af', metavar='filename', action='store',
+    help='Archive file - Provide a custom JSON archive file instead of the default "' + json_archive + '"')
+parser.add_argument('-tf', metavar='filename', action='store',
+    help='Tag file - Provide a custom JSON tag file instead of the default "' + json_tags + '"')
+parser.add_argument('-t', '-tag', action='append', metavar='word', required=True,
+    help='Term relevant to your activity, can be specified more than once (logical AND)')
+args = parser.parse_args()
+
+
+if args.af is not None:
+    json_archive = args.af
+if args.tf is not None:
+    json_tags = args.tf
+if debug:
+    print('Archive: {}\nTagset: {}'.format(json_archive, json_tags))
+
+
+def read_json(f):
+    ''' Read a file and return the JSON-parsed contents. '''
+    with open(f, 'r') as infile:
+        fd = infile.read()
+    d = json.loads(fd)
+    return d
+
+
+ad = read_json(json_archive)
+td = read_json(json_tags)
+
+
+# Generate list of titles containing all tags
+titles = list()
+# Iterate tag data
+for title, tags in td.items():
+    matched_all = True
+
+    # Iterate query tags
+    for qt in args.t:
+        lqt = qt.lower()
+        if not any(t.lower() == lqt for t in tags):
+            # Query tag is not in this title's tag set, so skip to next title
+            matched_all = False
+            break
+
+    if matched_all:
+        titles.append(title)
+
+
+# Generate URL list in ascending order based on title list
+reading_list = dict()
+for title in titles:
+    order = ad[title]['publishOrder']
+    reading_list[order] = dict()
+    reading_list[order]['title'] = title
+    reading_list[order]['urls'] = ad[title]['urls']
+
+# Print results
+print("You're searching for: {}".format(', '.join(args.t)))
+if len(reading_list) == 0:
+    print("Sorry, there are no titles matching all your tags.")
+    quit()
+
+print("The following list shows the titles and URLs for matching strips, in publication date order.  Enjoy!\n")
+for entry in sorted(reading_list.keys()):
+    print(reading_list[entry]['title'])
+    for url in reading_list[entry]['urls']:
+        print("\t" + url)
+
