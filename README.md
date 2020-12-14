@@ -50,6 +50,11 @@ Add a tag to one or more strips:
 ./tag -a -title "cumsprite" -t Mistress -t Ivan
 ```
 
+Dump a list of all tags:
+``` shell
+./tag -l
+```
+
 ## Updating Archive Data (DEFAULT behavior)
 If you already have an _archive.json_ (which you should, since one comes with this project),
 but you want to update it with new strip data, you can do it with:
