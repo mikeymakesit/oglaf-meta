@@ -35,7 +35,7 @@ or:
 ```
 
 The tools put in a small effort to save you from yourself but, really, the onus is
-on you not to shoot yourself in the foot.  I recommend backup up your `archive.json`
+on you not to shoot yourself in the foot.  I recommend backing up your `archive.json`
 and `tags.json` files just in case you mess something up and want to revert back.
 
 
