@@ -16,11 +16,13 @@ parser.add_argument('-a', action='store_true',
     help='Add - Add tags to strips')
 parser.add_argument('-d', action='store_true',
     help='Delete - Delete tags from strips')
+parser.add_argument('-l', action='store_true',
+    help='List - List all tags')
 parser.add_argument('-af', metavar='filename', action='store',
     help='Archive file - Provide a custom JSON archive filename instead of the default "' + json_archive + '"')
 parser.add_argument('-tf', metavar='filename', action='store',
     help='Tag file - Provide a custom JSON tag set instead of the default "' + json_tags + '"')
-parser.add_argument('-t', action='append', required=True, metavar='word',
+parser.add_argument('-t', action='append', metavar='word',
     help='Tag - Keyword relevant to your activity, can be specified more than once')
 parser.add_argument('-title', action='append',
     help='Title - The title of a comic related to your activity, can be specified more than once')
@@ -101,16 +103,24 @@ if args.a or args.d:
 else:
     # SEARCH TAGS
     hits = dict()
-    for tag in args.t:
-        ltag = tag.lower()
-        for k, v in td.items():
-            if any(s.lower() == ltag for s in v):
-                if k not in hits:
-                    hits[k] = list()
-                hits[k].append(tag)
-    if len(hits) > 0:
-        for h in hits:
-            print("{} ({})".format(h, ', '.join(hits[h])))
-    else:
-        print("No matches.")
+    if args.t:
+        for tag in args.t:
+            ltag = tag.lower()
+            for k, v in td.items():
+                if any(s.lower() == ltag for s in v):
+                    if k not in hits:
+                        hits[k] = list()
+                    hits[k].append(tag)
+        if len(hits) > 0:
+            for h in hits:
+                print("{} ({})".format(h, ', '.join(hits[h])))
+        else:
+            print("No matches.")
+
+    elif args.l:
+        tags = set()
+        for v in td.values():
+            for t in v:
+                tags.add(t)
+        print("Tags:\n{}".format('\n'.join(sorted(tags))))
 
