@@ -117,6 +117,19 @@ else:
         else:
             print("No matches.")
 
+    elif args.title:
+        for thistitle in args.title:
+            print(thistitle)
+            found = False
+            for title in td.keys():
+                if title.lower() == thistitle.lower():
+                    found = True
+                    for tag in sorted(td[title]):
+                        print('\t' + tag)
+                    break
+            if not found:
+                print("\tSorry, can't find '{}' in tag set.".format(thistitle))
+
     elif args.l:
         tags = set()
         for k, v in td.items():
