@@ -1,0 +1,117 @@
+#!/usr/bin/env python3
+
+import argparse
+import json
+import re
+import requests
+from bs4 import BeautifulSoup
+
+
+archive_url     = 'https://www.oglaf.com/archive/'
+archive_json    = 'archive.json'
+html_domain     = 'www.oglaf.com'
+protocol        = 'https'
+
+
+parser = argparse.ArgumentParser(description='Oglaf comic metadata scraper')
+parser.add_argument('-f', metavar='filename', action='store',
+    help='Filename - Provide a custom JSON output filename instead of the default "' + archive_json + '"')
+parser.add_argument('-r', action='store_true',
+    help='Rebuild - Build new JSON from website')
+parser.add_argument('-u', action='store_true',
+    help='Update - Read existing JSON and append new entries only [DEFAULT]')
+args = parser.parse_args()
+
+if args.f:
+    archive_json = args.f
+    print('Using custom JSON file: {}'.format(args.f))
+
+
+comics = dict()
+newcomics = dict()
+session = requests.Session()
+
+
+def get_strip_urls(soup):
+    ''' Given the file system location of a strip, find child strip locations '''
+    cur_page = soup.find('link', attrs={'rel':'canonical'}).get('href')
+    next_page = soup.find('a', attrs={'rel':'next'})
+
+    urls = [ cur_page ]
+
+    # The current page has no "next" so check for it before ASSuming
+    if next_page is not None:
+        next_page = next_page.get('href')
+
+        # https://www.oglaf.com/glove/2/ -> /glove/
+        uri = re.sub(r'^' + protocol + '://' + html_domain, '', cur_page, flags=re.IGNORECASE)
+        uri = re.sub(r'\d+/$', '', uri)
+
+        if uri in next_page:
+            next_page_text = get_page(protocol + '://' + html_domain + next_page)
+            npsoup = BeautifulSoup(next_page_text, 'html.parser')
+            urls = urls + get_strip_urls(npsoup)
+
+    for url in soup.find_all('a'):
+        href = url.get('href')
+        if href.endswith('/epilogue/'):
+            urls = urls + [ protocol + '://' + html_domain + href ]
+    return urls
+
+
+def get_page(url):
+    ''' Get a URL and return the content text, or None on error '''
+    r = session.get(url, cookies={'AGE_CONFIRMED':'yes'})
+    if r.status_code == requests.codes.ok:
+        return r.text
+    else:
+        return None
+
+
+# Slurp in the archive to parse comic strips
+archive = get_page(archive_url)
+soup = BeautifulSoup(archive, 'html.parser')
+
+
+# Load existing JSON if we're UPDATING
+if args.u or args.r is False:
+    with open(archive_json, 'r') as curfile:
+        curdata = curfile.read()
+    comics = json.loads(curdata)
+
+
+# Evaluate each strip in the archive
+# NOTE navigation relies on style elements in the archive page
+for strip in soup.find_all('img', attrs={'width': '400', 'height': '100'}):
+
+    # Get title for this one
+    parent_href = strip.find_parent('a').get('href')
+    strip = get_page(protocol + '://' + html_domain + parent_href)
+    s = BeautifulSoup(strip, 'html.parser')
+    strip_title = re.sub(r' page 1', '', s.title.string, flags=re.IGNORECASE)
+
+    if strip_title not in comics.keys(): 
+        # Enumerate all page links for this one, including epilogues
+        strip_urls = get_strip_urls(s)
+
+        # Populate ordered list (newest first)
+        newcomics[strip_title] = dict()
+        newcomics[strip_title]['urls'] = strip_urls
+    else:
+        print('Adding ' + str(len(newcomics)) + ' new entries to ' + archive_json)
+        # Let's ASSume we're only adding new entries, so when we find the first hit in
+        # existing metadata, I guess we're up to date
+        break
+
+
+num = len(comics)
+for title in newcomics.keys():
+    comics[title] = newcomics[title]
+    comics[title]['publishOrder'] = num
+    num += 1
+
+
+# Print JSON
+with open(archive_json, 'w') as outfile:
+    json.dump(comics, outfile)
+
