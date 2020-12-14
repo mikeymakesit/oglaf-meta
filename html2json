@@ -35,27 +35,33 @@ session = requests.Session()
 def get_strip_urls(soup):
     ''' Given the file system location of a strip, find child strip locations '''
     cur_page = soup.find('link', attrs={'rel':'canonical'}).get('href')
+
     next_page = soup.find('a', attrs={'rel':'next'})
-
-    urls = [ cur_page ]
-
-    # The current page has no "next" so check for it before ASSuming
     if next_page is not None:
         next_page = next_page.get('href')
 
-        # https://www.oglaf.com/glove/2/ -> /glove/
-        uri = re.sub(r'^' + protocol + '://' + html_domain, '', cur_page, flags=re.IGNORECASE)
-        uri = re.sub(r'\d+/$', '', uri)
-
-        if uri in next_page:
-            next_page_text = get_page(protocol + '://' + html_domain + next_page)
-            npsoup = BeautifulSoup(next_page_text, 'html.parser')
-            urls = urls + get_strip_urls(npsoup)
-
+    epi_page = None
     for url in soup.find_all('a'):
         href = url.get('href')
-        if href.endswith('/epilogue/'):
-            urls = urls + [ protocol + '://' + html_domain + href ]
+        if '/epilogue' in href:
+            epi_page = href
+
+    urls = [ cur_page ]
+
+    # Convert current URI for comparison: https://www.oglaf.com/glove/2/ -> /glove/
+    cur_uri = re.sub(r'^' + protocol + '://' + html_domain, '', cur_page, flags=re.IGNORECASE)
+    cur_uri = re.sub(r'\d+/$', '', cur_uri)
+
+    next_page_text = None
+    if epi_page is not None:
+        next_page_text = get_page(protocol + '://' + html_domain + epi_page)
+    if next_page is not None and cur_uri in next_page:
+        next_page_text = get_page(protocol + '://' + html_domain + next_page)
+
+    if next_page_text is not None:
+        npsoup = BeautifulSoup(next_page_text, 'html.parser')
+        urls = urls + get_strip_urls(npsoup)
+
     return urls
 
 
@@ -82,6 +88,7 @@ if args.u or args.r is False:
 
 # Evaluate each strip in the archive
 # NOTE navigation relies on style elements in the archive page
+strip_number = 0
 for strip in soup.find_all('img', attrs={'width': '400', 'height': '100'}):
 
     # Get title for this one
@@ -95,8 +102,10 @@ for strip in soup.find_all('img', attrs={'width': '400', 'height': '100'}):
         strip_urls = get_strip_urls(s)
 
         # Populate ordered list (newest first)
-        newcomics[strip_title] = dict()
-        newcomics[strip_title]['urls'] = strip_urls
+        newcomics[strip_number] = dict()
+        newcomics[strip_number]['title'] = strip_title
+        newcomics[strip_number]['urls'] = strip_urls
+        strip_number += 1
     else:
         print('Adding ' + str(len(newcomics)) + ' new entries to ' + archive_json)
         # Let's ASSume we're only adding new entries, so when we find the first hit in
@@ -105,13 +114,15 @@ for strip in soup.find_all('img', attrs={'width': '400', 'height': '100'}):
 
 
 num = len(comics)
-for title in newcomics.keys():
-    comics[title] = newcomics[title]
+for incr in sorted(newcomics.keys(), reverse=True):
+    title = newcomics[incr]['title']
+    comics[title] = dict()
+    comics[title]['urls'] = newcomics[incr]['urls']
     comics[title]['publishOrder'] = num
     num += 1
 
 
 # Print JSON
 with open(archive_json, 'w') as outfile:
-    json.dump(comics, outfile)
+    json.dump(comics, outfile, indent=2)
 
