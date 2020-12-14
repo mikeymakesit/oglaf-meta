@@ -15,7 +15,6 @@ I would highly value pull requests with more tag data in tags.json - specificall
 mapping named characters to the strips they appear in.  Feel free to submit pull 
 requests if you find errors or discrepancies in this code or the tagging.
 
-
 ## Setup
 To set up your environment to run this project on Linux or MacOS:
 ``` shell
@@ -25,28 +24,44 @@ pip3 install --upgrade pip
 pip3 install -r requirements.txt
 ```
 
-
 ## Review the help text
-See the tool's options by running:
+See the tools' options by running:
 ``` shell
 ./html2json -h
 ```
-
-
-## Generating all new Archive Data
-Maybe you want to rebuild _archive.json_?  Not to despair, you can do it with: 
+or:
 ``` shell
-./html2json -r
+./tag -h
 ```
 
+The tools put in a small effort to save you from yourself but, really, the onus is
+on you not to shoot yourself in the foot.  I recommend backup up your `archive.json`
+and `tags.json` files just in case you mess something up and want to revert back.
 
-## Updating Archive Data (default behavior)
+
+## Working with tags
+Search for a tag:
+``` shell
+./tag -title "cumsprite" -t Mistress -t Ivan
+```
+
+Add a tag to one or more strips:
+``` shell
+./tag -a -title "cumsprite" -t Mistress -t Ivan
+```
+
+## Updating Archive Data (DEFAULT behavior)
 If you already have an _archive.json_ (which you should, since one comes with this project),
 but you want to update it with new strip data, you can do it with:
 ```shell
 ./html2json -u
 ```
 
+## Generating all new Archive Data
+Maybe you want to rebuild _archive.json_?  Not to despair, you can do it with: 
+``` shell
+./html2json -r
+```
 
 ## Reference
 I found the following sites helpful while working on this project:
