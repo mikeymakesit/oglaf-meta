@@ -2,11 +2,11 @@
 
 import argparse
 import json
+from oglaf import TomeOfKnowledge
 
 
 json_archive    = 'archive.json'
 json_tags       = 'tags.json'
-debug           = False
 
 
 parser = argparse.ArgumentParser(description='Build an Oglaf reading guide based on tags.')
@@ -18,38 +18,27 @@ parser.add_argument('-t', '-tag', action='append', metavar='word', required=True
     help='Term relevant to your activity, can be specified more than once (logical AND)')
 args = parser.parse_args()
 
-
-if args.af is not None:
+if args.af:
     json_archive = args.af
-if args.tf is not None:
+if args.tf:
     json_tags = args.tf
-if debug:
-    print('Archive: {}\nTagset: {}'.format(json_archive, json_tags))
 
 
-def read_json(f):
-    ''' Read a file and return the JSON-parsed contents. '''
-    with open(f, 'r') as infile:
-        fd = infile.read()
-    d = json.loads(fd)
-    return d
-
-
-ad = read_json(json_archive)
-td = read_json(json_tags)
+tome = TomeOfKnowledge( archive_file = json_archive, tags_file = json_tags )
 
 
 # Generate list of titles containing all tags
 titles = list()
-# Iterate tag data
-for title, tags in td.items():
+for title in tome.titles.keys():
     matched_all = True
-
-    # Iterate query tags
-    for qt in args.t:
-        lqt = qt.lower()
-        if not any(t.lower() == lqt for t in tags):
-            # Query tag is not in this title's tag set, so skip to next title
+    for tag in args.t:
+        ltag = tag.lower()
+        if ltag in tome.lctags.keys():
+            proper_tag = tome.lctags[ltag]
+            if proper_tag not in tome.titles[title]['tags']:
+                matched_all = False
+                break
+        else:
             matched_all = False
             break
 
@@ -60,10 +49,10 @@ for title, tags in td.items():
 # Generate URL list in ascending order based on title list
 reading_list = dict()
 for title in titles:
-    order = ad[title]['publishOrder']
+    order = tome.titles[title]['publishOrder']
     reading_list[order] = dict()
     reading_list[order]['title'] = title
-    reading_list[order]['urls'] = ad[title]['urls']
+    reading_list[order]['urls'] = tome.titles[title]['urls']
 
 # Print results
 print("You're searching for: {}".format(', '.join(args.t)))

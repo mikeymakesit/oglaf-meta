@@ -1,3 +1,5 @@
 NOTES
 crawl/
 venv/
+test/
+__pycache__/

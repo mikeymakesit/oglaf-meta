@@ -5,12 +5,10 @@ import json
 import re
 import requests
 from bs4 import BeautifulSoup
+from oglaf import TomeOfKnowledge
 
 
-archive_url     = 'https://www.oglaf.com/archive/'
 archive_json    = 'archive.json'
-html_domain     = 'www.oglaf.com'
-protocol        = 'https'
 
 
 parser = argparse.ArgumentParser(description='Oglaf comic metadata scraper')
@@ -24,7 +22,6 @@ args = parser.parse_args()
 
 if args.f:
     archive_json = args.f
-    print('Using custom JSON file: {}'.format(args.f))
 
 
 comics = dict()
@@ -49,14 +46,14 @@ def get_strip_urls(soup):
     urls = [ cur_page ]
 
     # Convert current URI for comparison: https://www.oglaf.com/glove/2/ -> /glove/
-    cur_uri = re.sub(r'^' + protocol + '://' + html_domain, '', cur_page, flags=re.IGNORECASE)
+    cur_uri = re.sub(r'^' + TomeOfKnowledge.PROTOHOST, '', cur_page, flags=re.IGNORECASE)
     cur_uri = re.sub(r'\d+/$', '', cur_uri)
 
     next_page_text = None
     if epi_page is not None:
-        next_page_text = get_page(protocol + '://' + html_domain + epi_page)
+        next_page_text = get_page(TomeOfKnowledge.PROTOHOST + epi_page)
     if next_page is not None and cur_uri in next_page:
-        next_page_text = get_page(protocol + '://' + html_domain + next_page)
+        next_page_text = get_page(TomeOfKnowledge.PROTOHOST + next_page)
 
     if next_page_text is not None:
         npsoup = BeautifulSoup(next_page_text, 'html.parser')
@@ -75,7 +72,7 @@ def get_page(url):
 
 
 # Slurp in the archive to parse comic strips
-archive = get_page(archive_url)
+archive = get_page(TomeOfKnowledge.ARCHIVE_URL)
 soup = BeautifulSoup(archive, 'html.parser')
 
 
@@ -93,7 +90,7 @@ for strip in soup.find_all('img', attrs={'width': '400', 'height': '100'}):
 
     # Get title for this one
     parent_href = strip.find_parent('a').get('href')
-    strip = get_page(protocol + '://' + html_domain + parent_href)
+    strip = get_page(TomeOfKnowledge.PROTOHOST + parent_href)
     s = BeautifulSoup(strip, 'html.parser')
     strip_title = re.sub(r' page 1', '', s.title.string, flags=re.IGNORECASE)
 
