@@ -5,26 +5,13 @@ import json
 from oglaf import TomeOfKnowledge
 
 
-json_archive    = 'archive.json'
-json_tags       = 'tags.json'
-
-
 parser = argparse.ArgumentParser(description='Build an Oglaf reading guide based on tags.')
-parser.add_argument('-af', metavar='filename', action='store',
-    help='Archive file - Provide a custom JSON archive file instead of the default "' + json_archive + '"')
-parser.add_argument('-tf', metavar='filename', action='store',
-    help='Tag file - Provide a custom JSON tag file instead of the default "' + json_tags + '"')
 parser.add_argument('-t', '-tag', action='append', metavar='word', required=True,
     help='Term relevant to your activity, can be specified more than once (logical AND)')
 args = parser.parse_args()
 
-if args.af:
-    json_archive = args.af
-if args.tf:
-    json_tags = args.tf
 
-
-tome = TomeOfKnowledge( archive_file = json_archive, tags_file = json_tags )
+tome = TomeOfKnowledge()
 
 
 # Generate list of titles containing all tags

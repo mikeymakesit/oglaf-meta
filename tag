@@ -5,10 +5,6 @@ import json
 from oglaf import TomeOfKnowledge
 
 
-json_archive    = 'archive.json'
-json_tags       = 'tags.json'
-
-
 parser = argparse.ArgumentParser(description='Oglaf comic tag manager')
 parser.add_argument('-s', action='store_true',
     help='Search - Find tags in strips [DEFAULT]')
@@ -18,10 +14,6 @@ parser.add_argument('-d', action='store_true',
     help='Delete - Delete tags from strips')
 parser.add_argument('-l', action='store_true',
     help='List - List all tags')
-parser.add_argument('-af', metavar='filename', action='store',
-    help='Archive file - Provide a custom JSON archive file instead of the default "' + json_archive + '"')
-parser.add_argument('-tf', metavar='filename', action='store',
-    help='Tag file - Provide a custom JSON tag file instead of the default "' + json_tags + '"')
 parser.add_argument('-t', '-tag', action='append', metavar='word',
     help='Tag - Keyword relevant to your activity, can be specified more than once')
 parser.add_argument('-title', action='append',
@@ -30,13 +22,8 @@ parser.add_argument('-url', action='append',
     help='The URL of a comic related to your activity, can be specified more than once')
 args = parser.parse_args()
 
-if args.af:
-    json_archive = args.af
-if args.tf:
-    json_tags = args.tf
 
-
-tome = TomeOfKnowledge( archive_file = json_archive, tags_file = json_tags )
+tome = TomeOfKnowledge()
 
 
 def urls2titles():

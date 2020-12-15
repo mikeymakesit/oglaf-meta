@@ -6,11 +6,13 @@ import json
 class TomeOfKnowledge:
     ''' Easily manipulate and interact with comic strip data. '''
 
-    PROTOHOST   = 'https://www.oglaf.com'
-    ARCHIVE_URL = PROTOHOST + '/archive/'
+    PROTOHOST    = 'https://www.oglaf.com'
+    ARCHIVE_URL  = PROTOHOST + '/archive/'
+    JSON_ARCHIVE = 'archive.json'
+    JSON_TAGS    = 'tags.json'
 
 
-    def __init__(self, archive_file=None, tags_file=None):
+    def __init__(self, archive_file=JSON_ARCHIVE, tags_file=JSON_TAGS):
         ''' Initialize '''
         self.titles = dict()
         self.urls = dict()
@@ -18,8 +20,6 @@ class TomeOfKnowledge:
         self.lctitles = dict()
         self.lctags = dict()
 
-        if archive_file is None or tags_file is None:
-            raise Exception("You must supply archive and tags files.")
         self.files = dict()
         self.files['archive'] = archive_file
         self.files['tags'] = tags_file
