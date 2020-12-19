@@ -1,4 +1,5 @@
 NOTES
+.DS_Store
 crawl/
 venv/
 test/
