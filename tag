@@ -111,12 +111,13 @@ if args.t:
     hits = dict()
     for tag in args.t:
         ltag = tag.lower()
-        if ltag in tome.lctags:
-            proper_tag = tome.lctags[ltag]
-            for title in tome.tags[proper_tag]:
-                if title not in hits.keys():
-                    hits[title] = list()
-                hits[title].append(proper_tag)
+        for lctag in tome.lctags:
+            if ltag in lctag:
+                proper_tag = tome.lctags[lctag]
+                for title in tome.tags[proper_tag]:
+                    if title not in hits.keys():
+                        hits[title] = list()
+                    hits[title].append(proper_tag)
 
     if len(hits) > 0:
         for title in hits.keys():

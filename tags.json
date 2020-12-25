@@ -988,93 +988,592 @@
     "Pity Date",
     "Doppelbanger"
   ],
-  "BFCs": [],
-  "Goddess Extraction": [],
-  "tool": [],
-  "Rite of Passage": [],
-  "Ornithology": [],
-  "Umbra Wynterdarque": [],
-  "Fancy": [],
-  "Survivor": [],
-  "Unattainable": [],
-  "Laundry Day": [],
-  "Birdmen": [],
-  "Gifted": [],
-  "The Abyss": [],
-  "Cryophilia": [],
-  "Opener": [],
-  "Sterling": [],
-  "Bilge": [],
-  "Puzzlecunt": [],
-  "Tibia": [],
-  "Shaft of Drama": [],
-  "Performance Anxiety": [],
-  "The Glamazon Way": [],
-  "Laridae": [],
-  "Caveat emptor": [],
-  "Gifted 2": [],
-  "Even now Sithrak oils the spit": [],
-  "Delusionist": [],
-  "Owlbear": [],
-  "Fully Fleshed": [],
-  "Feral Chic": [],
-  "Finger bun": [],
-  "The Moment": [],
-  "deadfall": [],
-  "Bugfuck": [],
-  "Two Wishes": [],
-  "Brass Knobs": [],
-  "Game of Death": [],
-  "Practice": [],
-  "Vaginesque": [],
-  "How to Talk Dirty": [],
-  "Sensible shoes": [],
-  "Assorted Fruits of Wrath": [],
-  "the Burning Jewels of Death": [],
-  "Unction": [],
-  "the Automaton": [],
-  "Geewoks": [],
-  "Dust and Glitter": [],
-  "Vorpal Blade": [],
-  "habeas corpus": [],
-  "envy": [],
-  "Hefty Grogol": [],
-  "The Lonely Mountain": [],
-  "Legacy": [],
-  "Chronotherapy": [],
-  "Rift of Despair": [],
-  "Audition": [],
-  "Muster the troops": [],
-  "Croutons": [],
-  "Bascinet": [],
-  "Self-Awarding Trophy": [],
-  "the Illusionist": [],
-  "Curse Emporium": [],
-  "Lair of the Grandmaster": [],
-  "The Trammels of Mistertique": [],
-  "Sextiles": [],
-  "Outreach": [],
-  "Imposture": [],
-  "Ahoy": [],
-  "Cartomancy": [],
-  "Return of the Illusionist OR IS IT?": [],
-  "Appeal to heaven": [],
-  "Number 1 Dad": [],
-  "trump": [],
-  "ladder": [],
-  "Morality Play": [],
-  "pomp": [],
-  "harrow": [],
-  "turnback": [],
-  "Enlist!": [],
-  "the Cyprian defence": [],
-  "Hypoxia": [],
-  "Ron the Brawler": [],
-  "Perfect buttocks now!": [],
-  "Tower of Assumptions": [],
-  "Battledress": [],
-  "pretaliation": [],
-  "Humans!": [],
+  "True Slut Adventures": [
+    "Cock",
+    "Tits",
+    "Titfuck",
+    "Cum",
+    "Bees",
+    "Dick Bees",
+    "Slut"
+  ],
+  "BFCs": [
+    "Tits",
+    "Cock",
+    "Dark Lady",
+    "Demon",
+    "Seduce"
+  ],
+  "Goddess Extraction": [
+    "Tits",
+    "Doggy",
+    "Fuck",
+    "Tape Worm Goddess",
+    "Bear",
+    "Vocabulary Bears"
+  ],
+  "tool": [
+    "Snow Queen",
+    "Dwarves",
+    "Vibrator"
+  ],
+  "Rite of Passage": [
+    "Test",
+    "Man",
+    "Bog Beast"
+  ],
+  "Ornithology": [
+    "Bird",
+    "Wizard",
+    "Eagle",
+    "Eat",
+    "Hobbit"
+  ],
+  "Umbra Wynterdarque": [
+    "Treasure",
+    "Wand",
+    "Ring of Optimism",
+    "Ring"
+  ],
+  "Fancy": [
+    "Fantasy",
+    "Dominate",
+    "Tits",
+    "Cock",
+    "Cum",
+    "Cake"
+  ],
+  "Survivor": [
+    "Kronar",
+    "Talent Quest"
+  ],
+  "Unattainable": [
+    "Fancy",
+    "Wish Dolly",
+    "Lady",
+    "Ugly",
+    "Wish"
+  ],
+  "Laundry Day": [
+    "Cock",
+    "Wish Dolly",
+    "Invisible",
+    "Cloth",
+    "Wish"
+  ],
+  "Birdmen": [
+    "Kronar",
+    "Doggy",
+    "Anal",
+    "Birdman",
+    "Peacock",
+    "Cock",
+    "Tear"
+  ],
+  "Gifted": [
+    "Curse",
+    "Spectre",
+    "Curse Spectre",
+    "Blowjob",
+    "Champion"
+  ],
+  "The Abyss": [
+    "Thaumaturge",
+    "Evil",
+    "Army",
+    "Fire",
+    "Goblin"
+  ],
+  "Cryophilia": [
+    "Vanka",
+    "Frost",
+    "Sapphire",
+    "Golem",
+    "Porn"
+  ],
+  "Opener": [
+    "Cock",
+    "Preamble",
+    "Tits",
+    "Fuck",
+    "Wank"
+  ],
+  "Sterling": [
+    "Tits",
+    "Cock",
+    "Fuck",
+    "Best"
+  ],
+  "Bilge": [
+    "Warship",
+    "Ship",
+    "Vikings"
+  ],
+  "Puzzlecunt": [
+    "Misterique",
+    "Cock",
+    "Hydrated"
+  ],
+  "Tibia": [
+    "Bone",
+    "Skeleton",
+    "Graveyard",
+    "Boner",
+    "Fuck"
+  ],
+  "Shaft of Drama": [
+    "Dildo",
+    "Shaft of Drama"
+  ],
+  "Performance Anxiety": [
+    "Tits",
+    "Fisting",
+    "Blowjob"
+  ],
+  "The Glamazon Way": [
+    "Glamazon",
+    "Sword",
+    "Net",
+    "Whip",
+    "Lasso",
+    "Throwing Anus",
+    "Ladies"
+  ],
+  "Laridae": [
+    "Citadel of Justice",
+    "Paladin",
+    "Bogdan",
+    "Bogdan Hook-hand",
+    "Seagull",
+    "Kill",
+    "Parents"
+  ],
+  "Caveat emptor": [
+    "Trap",
+    "Shop",
+    "Customer"
+  ],
+  "Gifted 2": [
+    "Blowjob",
+    "Curse",
+    "Champion",
+    "Finger",
+    "Butthole",
+    "Cock",
+    "Cum",
+    "King Blowjob"
+  ],
+  "Even now Sithrak oils the spit": [
+    "Sithrak",
+    "Followers",
+    "Skull",
+    "Blind Gibberer",
+    "Torture"
+  ],
+  "Delusionist": [
+    "Chasm King",
+    "Delusion"
+  ],
+  "Owlbear": [
+    "Owlbear",
+    "Fuck",
+    "Tits",
+    "Apex Predator"
+  ],
+  "Fully Fleshed": [
+    "Bespoke Fucks",
+    "Fucksmith",
+    "Fantasy",
+    "Ass"
+  ],
+  "Feral Chic": [
+    "Barbarian",
+    "Feelings",
+    "Trackless Waste",
+    "Spunk Tracks"
+  ],
+  "Finger bun": [
+    "Tits",
+    "Latex",
+    "Fuck Cakes",
+    "BDSM",
+    "Bakery",
+    "Cake",
+    "Horse Bukkake"
+  ],
+  "The Moment": [
+    "Fuck",
+    "Tits",
+    "King",
+    "Moment",
+    "Ice Cream"
+  ],
+  "deadfall": [
+    "Deer",
+    "Trap",
+    "Berries"
+  ],
+  "Bugfuck": [
+    "Preying Mantis",
+    "Fuck",
+    "Eat",
+    "Head",
+    "Anglerfish",
+    "Tits",
+    "Cock",
+    "Cum",
+    "Parasite",
+    "Slut"
+  ],
+  "Two Wishes": [
+    "Wish",
+    "Genie",
+    "Thug",
+    "Curse",
+    "Leprechaun"
+  ],
+  "Brass Knobs": [
+    "Knob",
+    "Cock",
+    "Brass",
+    "Dwarves",
+    "Combination Cock",
+    "Blowjob",
+    "Cum"
+  ],
+  "Game of Death": [
+    "Game",
+    "Death",
+    "Gladiator"
+  ],
+  "Practice": [
+    "Navaan",
+    "Doctor",
+    "Arm"
+  ],
+  "Vaginesque": [
+    "Tits",
+    "Fuck",
+    "Piss"
+  ],
+  "How to Talk Dirty": [
+    "Cock",
+    "Blowjob",
+    "Ball Gag"
+  ],
+  "Sensible shoes": [
+    "Shoes",
+    "Outfit",
+    "Practical",
+    "Fight",
+    "Cock",
+    "Wank",
+    "Pussy",
+    "Enemies"
+  ],
+  "Assorted Fruits of Wrath": [
+    "God",
+    "Fire"
+  ],
+  "the Burning Jewels of Death": [
+    "Kronar",
+    "Cock",
+    "Balls",
+    "Kiss"
+  ],
+  "Unction": [
+    "Wank",
+    "Church",
+    "Church of the Quivering Rump",
+    "Bitches"
+  ],
+  "the Automaton": [
+    "Dwarves",
+    "Chess",
+    "Golem",
+    "Chasm King"
+  ],
+  "Geewoks": [
+    "Sithrak",
+    "GWOK",
+    "Ghost",
+    "Geewok"
+  ],
+  "Dust and Glitter": [
+    "Seeress",
+    "Grannybanging",
+    "Octogenarian"
+  ],
+  "Vorpal Blade": [
+    "Cock",
+    "Tits",
+    "Fuck",
+    "Orgasm",
+    "Wank",
+    "Wish Dolly"
+  ],
+  "habeas corpus": [
+    "Cock",
+    "Rampage",
+    "Fuck",
+    "King Blowjob",
+    "Blowjob",
+    "Miss Lucretia",
+    "Orgasm",
+    "Fuckbaker",
+    "Cum",
+    "Curse",
+    "Wish Dolly",
+    "Curse Spectre"
+  ],
+  "envy": [
+    "Fuck",
+    "Jealous",
+    "Friends"
+  ],
+  "Hefty Grogol": [
+    "Sword of Friendship",
+    "Grogol"
+  ],
+  "The Lonely Mountain": [
+    "Dragon",
+    "Dwarves",
+    "Gold",
+    "Cock"
+  ],
+  "Legacy": [
+    "Dark Marauder",
+    "King",
+    "Behead"
+  ],
+  "Chronotherapy": [
+    "Time",
+    "Plague",
+    "Marriage",
+    "Princess",
+    "Handjob"
+  ],
+  "Rift of Despair": [
+    "Banthram",
+    "Imp"
+  ],
+  "Audition": [
+    "Tits",
+    "Finger",
+    "Ugly",
+    "Audition"
+  ],
+  "Muster the troops": [
+    "King",
+    "Usurper",
+    "Prince Ruprecht",
+    "Don"
+  ],
+  "Croutons": [
+    "Fucksmith",
+    "Cock",
+    "Anal",
+    "Snowman",
+    "Tits",
+    "Pussy",
+    "Seagull"
+  ],
+  "Bascinet": [
+    "Chasm King",
+    "Knight",
+    "Child",
+    "Skull",
+    "Bleeding",
+    "Nude",
+    "Baby"
+  ],
+  "Self-Awarding Trophy": [
+    "Tits",
+    "Oral",
+    "Finger",
+    "Blowjob",
+    "Trophy",
+    "Best at Sex",
+    "Best at Puns"
+  ],
+  "the Illusionist": [
+    "Infinity",
+    "Dove",
+    "Illusion",
+    "Woodland Animals",
+    "Illusionist"
+  ],
+  "Curse Emporium": [
+    "Curse Spectre",
+    "Sex"
+  ],
+  "Lair of the Grandmaster": [
+    "Lethal Chessboard",
+    "Game",
+    "Death",
+    "Snake",
+    "Ladder",
+    "Lethal Nursery"
+  ],
+  "The Trammels of Mistertique": [
+    "Misterique",
+    "Cougar Queen",
+    "Mystery"
+  ],
+  "Sextiles": [
+    "Slut",
+    "Cloth",
+    "Fuck"
+  ],
+  "Outreach": [
+    "Sithrak",
+    "War",
+    "Battle",
+    "Torture",
+    "Book of Dismay",
+    "Moustache"
+  ],
+  "Imposture": [
+    "Impostor",
+    "Diamond",
+    "Slut"
+  ],
+  "Ahoy": [
+    "Moby Dick",
+    "Whale",
+    "Revenge"
+  ],
+  "Cartomancy": [
+    "Tarot",
+    "Card",
+    "Sex",
+    "Death",
+    "Cups",
+    "Portent"
+  ],
+  "Return of the Illusionist OR IS IT?": [
+    "Carrot",
+    "Cock",
+    "Blowjob",
+    "Illusionist",
+    "Tits"
+  ],
+  "Appeal to heaven": [
+    "Cock",
+    "Balls",
+    "Goddess",
+    "Slut",
+    "Armor"
+  ],
+  "Number 1 Dad": [
+    "Baby",
+    "Girl",
+    "Fuck",
+    "Pimp"
+  ],
+  "trump": [
+    "Vanka",
+    "Cock",
+    "Cum",
+    "Wank",
+    "Tits"
+  ],
+  "ladder": [
+    "Cum",
+    "Trance",
+    "Fuck",
+    "Cock",
+    "King of Bees",
+    "Climax"
+  ],
+  "Morality Play": [
+    "Fuck",
+    "Cock",
+    "Pussy",
+    "Chastity",
+    "Blowjob",
+    "Anal"
+  ],
+  "pomp": [
+    "Tits",
+    "Open",
+    "Fuck",
+    "Foreplay"
+  ],
+  "harrow": [
+    "Thessaly",
+    "Goose",
+    "Talking",
+    "Chair",
+    "Torture"
+  ],
+  "turnback": [
+    "Adventurers",
+    "Death",
+    "Hood",
+    "Gate",
+    "Guardian"
+  ],
+  "Enlist!": [
+    "Assholes",
+    "Trooper Day",
+    "Enlist"
+  ],
+  "the Cyprian defence": [
+    "Chess",
+    "Fuck",
+    "Seduction",
+    "Seduce",
+    "Blowjob"
+  ],
+  "Hypoxia": [
+    "Baron",
+    "Ashpyxiation",
+    "Defeat",
+    "Sword",
+    "Wank",
+    "Fungus"
+  ],
+  "Ron the Brawler": [
+    "Big Ron",
+    "Tavern",
+    "Brawler"
+  ],
+  "Perfect buttocks now!": [
+    "Cosmetic Sorcery"
+  ],
+  "Tower of Assumptions": [
+    "Tower",
+    "Behead",
+    "Wife",
+    "Tits",
+    "Fuck",
+    "Assumption",
+    "Assume"
+  ],
+  "Battledress": [
+    "Tumescent Necropolis",
+    "Golem",
+    "Tits",
+    "Cock",
+    "Pussy",
+    "Spider",
+    "Centaur"
+  ],
+  "pretaliation": [
+    "Spirit of Prevenge",
+    "Murder",
+    "Mystery",
+    "Justice",
+    "Ghost"
+  ],
+  "Humans!": [
+    "Cock",
+    "Humans",
+    "Gate",
+    "Fuck",
+    "Trick"
+  ],
   "Chirp and mutter": [],
   "Heel": [],
   "Chauncey, Earl of Gloom": [],
@@ -1390,5 +1889,6 @@
   "Sirenia": [],
   "Rattlesnake": [],
   "Associate Membership": [],
-  "Verbal Component": []
+  "Verbal Component": [],
+  "Axmas": []
 }
