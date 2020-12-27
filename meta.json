@@ -3885,7 +3885,11 @@
     "publishOrder": 294
   },
   "Clustering": {
-    "tags": [],
+    "tags": [
+      "Woman",
+      "Mystery",
+      "Beautiful"
+    ],
     "arcs": [],
     "urls": [
       "https://www.oglaf.com/clustering/"
@@ -6376,6 +6380,14 @@
     "tags": [],
     "urls": [
       "https://www.oglaf.com/axmas/"
+    ]
+  },
+  "TSA 2020": {
+    "arcs": [],
+    "publishOrder": 597,
+    "tags": [],
+    "urls": [
+      "https://www.oglaf.com/tsa2020/"
     ]
   }
 }

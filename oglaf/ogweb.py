@@ -83,16 +83,16 @@ class OGWeb:
         epi_page = None
         for url in soup.find_all('a'):
             href = url.get('href')
-            if cur_uri in href:
+            if cur_uri in href and href != cur_url:
                 epi_page = self.PROTOHOST + href
 
         urls = [ cur_url ]
 
         next_page_text = None
         if epi_page is not None:
-            next_page_text = get_page(epi_page)
+            next_page_text = self.get_page(epi_page)
         if next_url is not None and cur_uri in next_url:
-            next_page_text = get_page(next_url)
+            next_page_text = self.get_page(next_url)
 
         if next_page_text is not None:
             # RECURSION HERE
