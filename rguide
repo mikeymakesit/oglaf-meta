@@ -2,32 +2,49 @@
 
 import argparse
 import json
-from oglaf import TomeOfKnowledge
+from oglaf import knowledge
 
 
 parser = argparse.ArgumentParser(description='Build an Oglaf reading guide based on tags.')
-parser.add_argument('-t', '-tag', action='append', metavar='word', required=True,
-    help='Term relevant to your activity, can be specified more than once (logical AND)')
+parser.add_argument('-tag', action='append', metavar='tag', default=None,
+    help='Tag to search for, can be specified more than once (logical AND)')
+parser.add_argument('-arc', action='store', metavar='arc', default=None,
+    help='Story arc to search for')
 args = parser.parse_args()
 
+if args.tag is None and args.arc is None:
+    parser.print_help()
+    quit()
 
-tome = TomeOfKnowledge()
+
+tome = knowledge.TomeOfKnowledge()
 
 
 # Generate list of titles containing all tags
 titles = list()
 for title in tome.titles.keys():
     matched_all = True
-    for tag in args.t:
-        ltag = tag.lower()
-        if ltag in tome.lctags.keys():
-            proper_tag = tome.lctags[ltag]
-            if proper_tag not in tome.titles[title]['tags']:
+
+    if args.tag is not None:
+        for tag in args.tag:
+            ltag = tag.lower()
+            if ltag in tome.lctags.keys():
+                proper_tag = tome.lctags[ltag]
+                if proper_tag not in tome.titles[title]['tags']:
+                    matched_all = False
+                    break
+            else:
                 matched_all = False
                 break
+
+    else:
+        larc = args.arc.lower()
+        if larc in tome.lcarcs.keys():
+            proper_arc = tome.lcarcs[larc]
+            if proper_arc not in tome.titles[title]['arcs']:
+                matched_all = False
         else:
             matched_all = False
-            break
 
     if matched_all:
         titles.append(title)
@@ -42,9 +59,13 @@ for title in titles:
     reading_list[order]['urls'] = tome.titles[title]['urls']
 
 # Print results
-print("You're searching for: {}".format(', '.join(args.t)))
+if args.tag is not None:
+    print("You're searching for tags: {}".format(', '.join(args.tag)))
+else:
+    print("You're searching for arc: {}".format(args.arc))
+
 if len(reading_list) == 0:
-    print("Sorry, there are no titles matching all your tags.")
+    print("Sorry, there are no titles matching your criteria.")
     quit()
 
 print("The following list shows the titles and URLs for matching strips, in publication date order.  Enjoy!\n")
@@ -52,4 +73,5 @@ for entry in sorted(reading_list.keys()):
     print(reading_list[entry]['title'])
     for url in reading_list[entry]['urls']:
         print("\t" + url)
+print()
 

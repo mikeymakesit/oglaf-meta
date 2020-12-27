@@ -7,7 +7,7 @@ from oglaf import knowledge, ogweb
 
 parser = argparse.ArgumentParser(description='Oglaf comic manager')
 
-# Fetch, add, delete, search options
+# Fetch, add, delete, search, list-all options
 parser.add_argument('-fetchnew', action='store_true',
     help='Fetch new strips from the Oglaf archive')
 parser.add_argument('-a', action='store_true',
@@ -16,12 +16,12 @@ parser.add_argument('-d', action='store_true',
     help='Delete - Delete tags from strips')
 parser.add_argument('-s', action='store_true',
     help='Search - Find tags in strips [DEFAULT]')
-
-parser.add_argument('-l', action='store', default='tags', metavar='tags|arcs|urls',
+parser.add_argument('-l', action='store', default=None, metavar='tags|arcs|urls|titles',
     help='List - List all [DEFAULT: tags]')
-parser.add_argument('-t', '-tag', action='append', metavar='word',
+
+parser.add_argument('-tag', action='append', metavar='word', default=None,
     help='Tag - Keyword relevant to your activity, can be specified more than once')
-parser.add_argument('-arc', action='append', metavar='label',
+parser.add_argument('-arc', action='append', metavar='label', default=None,
     help='Arc - Story arc')
 parser.add_argument('-title', action='append',
     help='Title - The title of a comic related to your activity, can be specified more than once')
@@ -101,28 +101,32 @@ def urls2titles():
         quit()
 
 
-# Fetch new strips from the archive
+#################################################
+
+
+# FETCH NEW metadata from the website
 if args.fetchnew:
     if fetch_new():
         tome.save_meta()
         print("Saved metadata")
-    exit()
+    quit()
 
 
-# ADD OR DELETE TAGS
-if args.a or args.d:
+# ADD OR DELETE TAGS/ARCS
+elif args.a or args.d:
     changed = 0
     if not args.title and not args.url:
-        print("You need to specify at least 1 title or URL to modify tags for.")
+        print("You need to specify at least 1 title or URL to modify.")
         quit()
 
-    # Get title(s) from supplied URL(s)
+    # Title is the correlation attribute, so convert any user-provided
+    # URLs into args.title so we can just work on titles from here.
     if args.url:
         urls2titles()
 
-    # Iterate over each title specified (including titles retrieved from URLs)
+    # Iterate over each title specified
     for title in args.title:
-        # Match the documented title's case
+        # Match the documented title's case, updating args.title accordingly
         known_title = False
         ltitle = title.lower()
         if ltitle in tome.lctitles.keys():
@@ -133,34 +137,66 @@ if args.a or args.d:
             continue
 
         # Process each tag for each title
-        for tag in args.t:
-            change = True
-            ltag = tag.lower()
-            if ltag in tome.lctags.keys():
-                # Prefer the case of existing tags so we don't end up with separate
-                # tags like: Tits, TITS, tIts
-                tag = tome.lctags[ltag]
-                if args.a and title in tome.tags[tag]:
-                    print("Tag '{}' already applied to '{}'".format(tag, title))
-                    change = False
-            else:
-                if args.d:
-                    print("Tag '{}' is not applied to '{}'".format(tag, title))
-                    change = False
+        if args.tag is not None:
+            for tag in args.tag:
+                change = True
+                ltag = tag.lower()
+                if ltag in tome.lctags.keys():
+                    # Prefer the case of existing tags so we don't end up with separate
+                    # tags like: Tits, TITS, tIts
+                    tag = tome.lctags[ltag]
+                    if args.a and title in tome.tags[tag]:
+                        print("Tag '{}' already applied to '{}'".format(tag, title))
+                        change = False
+                else:
+                    if args.d:
+                        print("Tag '{}' is not applied to '{}'".format(tag, title))
+                        change = False
 
-            # Actually make the addition that was requested and validated
-            if change and args.a:
-                if tag not in tome.tags.keys():
-                    tome.tags[tag] = list()
-                tome.tags[tag].append(title)
-                tome.titles[title]['tags'].append(tag)
-                changed += 1
+                # Actually make the addition that was requested and validated
+                if change and args.a:
+                    if tag not in tome.tags.keys():
+                        tome.tags[tag] = list()
+                    tome.tags[tag].append(title)
+                    tome.titles[title]['tags'].append(tag)
+                    changed += 1
 
-            # Actually make the deletion that was requested and validated
-            elif change and args.d:
-                tome.tags[tag].remove(title)
-                tome.titles[title]['tags'].remove(tag)
-                changed += 1
+                # Actually make the deletion that was requested and validated
+                elif change and args.d:
+                    tome.tags[tag].remove(title)
+                    tome.titles[title]['tags'].remove(tag)
+                    changed += 1
+
+        # Process each arc for each title
+        if args.arc is not None:
+            for arc in args.arc:
+                change = True
+                larc = arc.lower()
+                if larc in tome.lcarcs.keys():
+                    # Prefer the case of existing arcs so we don't end up with separate
+                    # arcs like: Cumsprite, cumSPRite, etc.
+                    arc = tome.lcarcs[larc]
+                    if args.a and title in tome.arcs[arc]:
+                        print("Arc '{}' already applied to '{}'".format(arc, title))
+                        change = False
+                else:
+                    if args.d:
+                        print("Arc '{}' is not applied to '{}'".format(arc, title))
+                        change = False
+
+                # Actually make the addition that was requested and validated
+                if change and args.a:
+                    if arc not in tome.arcs.keys():
+                        tome.arcs[arc] = list()
+                    tome.arcs[arc].append(title)
+                    tome.titles[title]['arcs'].append(arc)
+                    changed += 1
+
+                # Actually make the deletion that was requested and validated
+                elif change and args.d:
+                    tome.arcs[arc].remove(title)
+                    tome.titles[title]['arcs'].remove(arc)
+                    changed += 1
 
     # Save data back to files
     if changed > 0:
@@ -169,48 +205,73 @@ if args.a or args.d:
     quit()
 
 
-# Search by tag(s)
-# Will use logical OR if multiple tags specified by user
-if args.t:
-    hits = dict()
-    for tag in args.t:
-        ltag = tag.lower()
-        for lctag in tome.lctags:
-            if ltag in lctag:
-                proper_tag = tome.lctags[lctag]
-                for title in tome.tags[proper_tag]:
-                    if title not in hits.keys():
-                        hits[title] = list()
-                    hits[title].append(proper_tag)
-
-    if len(hits) > 0:
-        for title in hits.keys():
-            print("{} ({})".format(title, ', '.join(sorted(hits[title]))))
+# LIST-ALL
+# tags/arcs/urls/titles
+elif args.l:
+    if args.l == 'tags':
+        print('\n'.join(sorted(tome.tags.keys())))
+    elif args.l == 'arcs':
+        print('\n'.join(sorted(tome.arcs.keys())))
+    elif args.l == 'urls':
+        print('\n'.join(sorted(tome.urls.keys())))
+    elif args.l == 'titles':
+        print('\n'.join(sorted(tome.titles.keys())))
     else:
-        print("No matches.")
+        parser.print_help()
 
 
-# Dump tags by title or URL
+# LIST
+# Tags/arcs by title or URL
 elif args.title or args.url:
     # Get title(s) from supplied URL(s)
     if args.url:
         urls2titles()
 
     for thistitle in args.title:
-        print(thistitle)
-        found = False
         lthistitle = thistitle.lower()
         if lthistitle in tome.lctitles.keys():
-            found = True
-            for tag in sorted(tome.titles[tome.lctitles[lthistitle]]['tags']):
-                print('\t' + tag)
-        if not found:
-            print("\tSorry, can't find '{}' in tag set.".format(thistitle))
+            proper_title = tome.lctitles[lthistitle]
+            print("{} (publish order: {})".format(proper_title, tome.titles[proper_title]['publishOrder']))
+            for arc in sorted(tome.titles[proper_title]['arcs']):
+                print('\t' + arc + ' (arc)')
+            for tag in sorted(tome.titles[proper_title]['tags']):
+                print('\t' + tag + ' (tag)')
+            for url in sorted(tome.titles[proper_title]['urls']):
+                print('\tURL: ' + url)
+        else:
+            print("Title '{}' not found.".format(thistitle))
 
 
-# Dump tags
-elif args.l:
-    print('\n'.join(sorted(tome.tags.keys())))
+# SEARCH
+# Will use logical OR if multiple tags/arcs provided
+elif args.tag or args.arc:
+    hits = dict()
+
+    if args.tag:
+        for tag in args.tag:
+            ltag = tag.lower()
+            for lctag in tome.lctags:
+                if ltag in lctag:
+                    proper_tag = tome.lctags[lctag]
+                    for title in tome.tags[proper_tag]:
+                        if title not in hits.keys():
+                            hits[title] = list()
+                        hits[title].append(proper_tag)
+
+    if args.arc:
+        for arc in args.arc:
+            larc = arc.lower()
+            for lcarc in tome.lcarcs:
+                if larc in lcarc:
+                    proper_arc = tome.lcarcs[lcarc]
+                    for title in tome.arcs[proper_arc]:
+                        if title not in hits.keys():
+                            hits[title] = list()
+                        hits[title].append(proper_arc)
+
+    if len(hits) > 0:
+        for title in hits.keys():
+            print("{} ({})".format(title, ', '.join(sorted(hits[title]))))
 
 
 else:
