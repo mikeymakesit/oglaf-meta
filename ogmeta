@@ -2,20 +2,27 @@
 
 import argparse
 import json
-from oglaf import TomeOfKnowledge
+from oglaf import knowledge, ogweb
 
 
-parser = argparse.ArgumentParser(description='Oglaf comic tag manager')
-parser.add_argument('-s', action='store_true',
-    help='Search - Find tags in strips [DEFAULT]')
+parser = argparse.ArgumentParser(description='Oglaf comic manager')
+
+# Fetch, add, delete, search options
+parser.add_argument('-fetchnew', action='store_true',
+    help='Fetch new strips from the Oglaf archive')
 parser.add_argument('-a', action='store_true',
     help='Add - Add tags to strips')
 parser.add_argument('-d', action='store_true',
     help='Delete - Delete tags from strips')
-parser.add_argument('-l', action='store_true',
-    help='List - List all tags')
+parser.add_argument('-s', action='store_true',
+    help='Search - Find tags in strips [DEFAULT]')
+
+parser.add_argument('-l', action='store', default='tags', metavar='tags|arcs|urls',
+    help='List - List all [DEFAULT: tags]')
 parser.add_argument('-t', '-tag', action='append', metavar='word',
     help='Tag - Keyword relevant to your activity, can be specified more than once')
+parser.add_argument('-arc', action='append', metavar='label',
+    help='Arc - Story arc')
 parser.add_argument('-title', action='append',
     help='Title - The title of a comic related to your activity, can be specified more than once')
 parser.add_argument('-url', action='append',
@@ -23,7 +30,57 @@ parser.add_argument('-url', action='append',
 args = parser.parse_args()
 
 
-tome = TomeOfKnowledge()
+tome = knowledge.TomeOfKnowledge()
+
+
+def fetch_new():
+    ''' Update the tome with new strips from the Oglaf web archive '''
+    archive = ogweb.OGWeb()
+    archive.get_newest()
+    
+    if archive.newest_url is None:
+        print("Couldn't read the archive, maybe try later???")
+        return False
+    elif archive.newest_url in tome.urls:
+        print("No new strips to add.")
+        return False
+
+    newest_known_number = max(sorted(tome.order.keys()))
+    newest_known_title = tome.order[newest_known_number]
+    newest_known_url = tome.titles[newest_known_title]['urls'][0]
+
+    # There's at least one strip that can be found by navigating "next" /
+    # "previous" that's not in the archive. (I'm looking at you
+    # https://www.oglaf.com/trueslut2012/)
+    #
+    # Given a known strip URL, fetch it and start crawling the "next"
+    # and any other surprise strips until we get through the newest
+    # published strip.
+    #
+    known_page = archive.get_page(newest_known_url)
+    archive.get_strip_urls(known_page)
+    strip_url = archive.strip['next']
+    added = 0
+    while strip_url:
+        strip_page = archive.get_page(strip_url)
+
+        # Enumerate all page links for this one, including epilogues
+        archive.get_strip_urls(strip_page)
+        strip_title = archive.strip['title']
+
+        print("Adding '{}'".format(strip_title))
+        tome.add_strip(
+            title = strip_title,
+            urls = archive.strip['urls'],
+            publishorder = newest_known_number + added + 1
+        )
+        added += 1
+        strip_url = archive.strip['next']
+
+    if added > 0:
+        return True
+    else:
+        return False
 
 
 def urls2titles():
@@ -43,6 +100,13 @@ def urls2titles():
         print("Couldn't find any titles for your URLs, so quitting.  Bye.")
         quit()
 
+
+# Fetch new strips from the archive
+if args.fetchnew:
+    if fetch_new():
+        tome.save_meta()
+        print("Saved metadata")
+    exit()
 
 
 # ADD OR DELETE TAGS
@@ -100,7 +164,7 @@ if args.a or args.d:
 
     # Save data back to files
     if changed > 0:
-        tome.save_tags()
+        tome.save_meta()
         print("{} changes complete".format(changed))
     quit()
 
