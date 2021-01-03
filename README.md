@@ -82,7 +82,7 @@ Add a tag to one or more strips by specifying the strip's title or one of
 its page URLs:
 ``` shell
 ./ogmeta -a -url https://www.oglaf.com/cumsprite/ -tag Mistress -tag Ivan
-./ogmeta -a -title cumsprite -t Mistress -t Ivan
+./ogmeta -a -title cumsprite -tag Mistress -tag Ivan
 ```
 
 Dump a list of all tags:
