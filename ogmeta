@@ -46,6 +46,7 @@ def fetch_new():
         return False
 
     newest_known_number = max(sorted(tome.order.keys()))
+    orig_newest_known_number = newest_known_number
     newest_known_title = tome.order[newest_known_number]
     newest_known_url = tome.titles[newest_known_title]['urls'][0]
 
@@ -58,6 +59,18 @@ def fetch_new():
     # published strip.
     #
     known_page = archive.get_page(newest_known_url)
+
+    # Sigh, sometimes a strip gets added and then removed.  If the newest
+    # known strip isn't found, try for the one before that.
+    if known_page is None:
+        newest_known_number = max(sorted(tome.order.keys())) - 1
+        newest_known_title = tome.order[newest_known_number]
+        newest_known_url = tome.titles[newest_known_title]['urls'][0]
+        known_page = archive.get_page(newest_known_url)
+    if known_page is None:
+        print("Can't find my place in the archive, so quitting!")
+        exit()
+
     archive.get_strip_urls(known_page)
     strip_url = archive.strip['next']
     added = 0
@@ -72,7 +85,7 @@ def fetch_new():
         tome.add_strip(
             title = strip_title,
             urls = archive.strip['urls'],
-            publishorder = newest_known_number + added + 1
+            publishorder = orig_newest_known_number + added + 1
         )
         added += 1
         strip_url = archive.strip['next']
