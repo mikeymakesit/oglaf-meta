@@ -14,7 +14,15 @@
       "Alive",
       "Dead",
       "Cooked",
-      "Delicious"
+      "Delicious",
+      "Tits",
+      "Cock",
+      "Titty Tower",
+      "Architect",
+      "Princess",
+      "Boob Windows",
+      "Frog",
+      "Pervert"
     ],
     "arcs": [
       "Rise of Apprentice"
@@ -8537,6 +8545,14 @@
     "tags": [],
     "urls": [
       "https://www.oglaf.com/careful/"
+    ]
+  },
+  "Landmark": {
+    "arcs": [],
+    "publishOrder": 600,
+    "tags": [],
+    "urls": [
+      "https://www.oglaf.com/landmark/"
     ]
   }
 }
