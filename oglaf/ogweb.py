@@ -75,39 +75,39 @@ class OGWeb:
             next_link.decompose()
 
         # Convert current URI for comparison: https://www.oglaf.com/glove/2/ -> /glove/
-        cur_uri = re.sub(r'^' + self.PROTOHOST, '', cur_url, flags=re.IGNORECASE)
-        cur_uri = re.sub(r'/\d+/$', '/', cur_uri)
-        cur_uri = cur_uri.rstrip('/')
+        base_path = re.sub(r'^' + self.PROTOHOST, '', cur_url, flags=re.IGNORECASE)
+        base_path = re.sub(r'/\d+/$', '/', base_path)
+        base_path = base_path.rstrip('/')
+
+        if prev_url is not None and base_path not in prev_url:
+            # We must be on the first page of a strip
+            strip_title = re.sub(r' page 1', '', soup.title.string, flags=re.IGNORECASE)
+            self.strip['title'] = strip_title
+            self.strip['prev'] = prev_url
+            self.strip['urls'] = []
+        if next_url is None or base_path not in next_url:
+            # We must be on the last page of a strip
+            self.strip['next'] = next_url
+
+        self.strip['urls'].append(cur_url)
 
         # Find occasional epilogue or other add-ons (like /roughtrade/vocab/)
         epi_page = None
         for url in soup.find_all('a'):
             href = url.get('href')
-            if cur_uri in href and href != cur_url:
+            if base_path in href and href != cur_url:
                 epi_page = self.PROTOHOST + href
-
-        urls = [ cur_url ]
 
         next_page_text = None
         if epi_page is not None:
             next_page_text = self.get_page(epi_page)
-        if next_url is not None and cur_uri in next_url:
+        if next_url is not None and base_path in next_url:
             next_page_text = self.get_page(next_url)
 
         if next_page_text is not None:
             # RECURSION HERE
             # To grab URLs for any other URLs for this strip
-            urls = urls + self.get_strip_urls(next_page_text)
-
-        if prev_url is not None and cur_uri not in prev_url:
-            # We must be on the first page of a strip
-            strip_title = re.sub(r' page 1', '', soup.title.string, flags=re.IGNORECASE)
-            self.strip['title'] = strip_title
-            self.strip['prev'] = prev_url
-        if next_url is None or cur_uri not in next_url:
-            # We must be on the last page of a strip
-            self.strip['next'] = next_url
-            self.strip['urls'] = urls
+            self.get_strip_urls(next_page_text)
 
 
 if __name__ == '__main__':
